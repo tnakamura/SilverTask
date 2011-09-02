@@ -2,22 +2,6 @@
 # core.urls
 # 
 
-# Following few lines is an example urlmapping with an older interface.
-"""
-from werkzeug.routing import EndpointPrefix, Rule
-
-def make_rules():
-  return [
-    EndpointPrefix('core/', [
-      Rule('/', endpoint='index'),
-    ]),
-  ]
-
-all_views = {
-  'core/index': 'core.views.index',
-}
-"""
-
 from kay.routing import (
   ViewGroup, Rule
 )
@@ -25,6 +9,8 @@ from kay.routing import (
 view_groups = [
   ViewGroup(
     Rule('/', endpoint='index', view='core.views.index'),
+    Rule('/tasks', endpoint='tasks', view='core.views.tasks'),
+    Rule('/tasks/<key>', endpoint='task_detail', view='core.views.task_detail'),
   )
 ]
 
