@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="SilverTask.Views.TaskView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:SilverTask.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="400">
+    <UserControl.Resources>
+        <local:BooleanVisibilityConverter x:Key="_BooleanVisibilityConverter"/>
+        <local:BooleanVisibilityConverter x:Key="_NotBooleanVisibilityConverter"
+                                          Not="True"/>
+        <local:NotConverter x:Key="_NotConverter"/>
+    </UserControl.Resources>
+    
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <!--通常表示する画面-->
+        <Grid Visibility="{Binding Path=IsEditing, Converter={StaticResource _NotBooleanVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding Path=Name}"
+                               Grid.Row="0"/>
+            <StackPanel Orientation="Horizontal"
+                                Grid.Row="1">
+                <HyperlinkButton Content="編集"
+                                 DataContext="{Binding}"
+                                 IsTabStop="False"
+                                 Visibility="{Binding Path=Done,Converter={StaticResource _NotBooleanVisibilityConverter}}"
+                                 ToolTipService.ToolTip="タスクを編集します。"
+                                 Click="EditButtonClick"/>
+                <HyperlinkButton Content="完了"
+                                 DataContext="{Binding}"
+                                 IsTabStop="False"
+                                 ToolTipService.ToolTip="タスクを完了します。"
+                                 Visibility="{Binding Path=Done,Converter={StaticResource _NotBooleanVisibilityConverter}}"
+                                 Click="CompleteButtonClick"/>
+                <HyperlinkButton Content="未完了"
+                                 DataContext="{Binding}"
+                                 ToolTipService.ToolTip="タスクを未完了にします。"
+                                 Visibility="{Binding Path=Done,Converter={StaticResource _BooleanVisibilityConverter}}"
+                                 Click="UnCompletedButtonClick"/>
+                <HyperlinkButton Content="削除"
+                                 DataContext="{Binding}"
+                                 ToolTipService.ToolTip="タスクを削除します。"
+                                 IsTabStop="False"
+                                 Click="DeleteButtonClick"/>
+            </StackPanel>
+        </Grid>
+        
+        <!--その場編集モード時の画面-->
+        <Grid Visibility="{Binding Path=IsEditing, Converter={StaticResource _BooleanVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="名前"
+                           HorizontalAlignment="Left"/>
+                <TextBox x:Name="_nameTextBox"
+                         HorizontalAlignment="Left"
+                         Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnExceptions=True, NotifyOnValidationError=True}"
+                         Width="200"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+                <Button Content="キャンセル"
+                    DataContext="{Binding}"
+                    Click="CancelButtonClick"/>
+                <Button Content="保存"
+                    DataContext="{Binding}"
+                    Click="SaveButtonClick"/>                
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
