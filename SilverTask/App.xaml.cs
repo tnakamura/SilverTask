@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace SilverTask
 {
@@ -27,6 +28,11 @@ namespace SilverTask
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             this.RootVisual = new MainPage();
+        }
+
+        public static Dispatcher CurrentDispatcher
+        {
+            get { return Deployment.Current.Dispatcher; }
         }
 
         private void Application_Exit(object sender, EventArgs e)
